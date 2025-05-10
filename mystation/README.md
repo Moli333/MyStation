@@ -1,12 +1,33 @@
-# React + Vite
+# 🎧 MyStation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web en React para conectar con cuenta de Spotify, visualizar playlists, perfil musical, y explorar nueva música.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologías
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React + Vite
+- React Router
+- Context API
+- Bootstrap
+- Firebase Authentication
+- Spotify Web API
 
-## Expanding the ESLint configuration
+## 🔐 Autenticación
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Registro e inicio de sesión con Firebase
+- Soporte para OAuth de Spotify, Google, Facebook
+
+## 🎵 Funcionalidades
+
+- Perfil de usuario conectado a Spotify
+- Visualización y gestión de playlists
+- Feed con playlists populares de otros usuarios
+
+## 📁 Estructura del código
+
+Incluye rutas, autenticación por contexto, hooks personalizados, y componentes reutilizables.
+
+## 🛠️ Configuración inicial
+
+```bash
+npm install
+npm run dev
