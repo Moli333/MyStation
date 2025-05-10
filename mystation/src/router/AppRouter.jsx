@@ -1,6 +1,10 @@
 import { Navigate, Routes, Route } from "react-router-dom";
 import { HomePage } from "../events/pages/HomePage";
+<<<<<<< HEAD
 import { LoginPage } from "../auth/pages/LoginPage";
+=======
+import { LoginPage } from "../events/pages/LoginPage";
+>>>>>>> 66cafe3 (Guardar cambios de estructura)
 import { useContext } from "react";
 import { UserContext } from "../auth/contexts/UserContext";
 
@@ -9,6 +13,7 @@ export const AppRouter = () => {
         userState: { logged },
     } = useContext(UserContext);
 
+<<<<<<< HEAD
     if (logged) {
     return (
         <Routes>
@@ -18,6 +23,8 @@ export const AppRouter = () => {
     );
 }
 
+=======
+>>>>>>> 66cafe3 (Guardar cambios de estructura)
     if (!logged) {
         return (
             <Routes>
@@ -36,3 +43,8 @@ export const AppRouter = () => {
     );
 
 };
+<<<<<<< HEAD
+=======
+console.log("🧭 AppRouter cargado");
+
+>>>>>>> 66cafe3 (Guardar cambios de estructura)

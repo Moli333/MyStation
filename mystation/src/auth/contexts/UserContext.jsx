@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { createContext, useContext, useReducer } from "react";
 import { useAuthenticate } from "../../hooks/useAuthenticate";
 import { authReducer } from "../reducers/authReducer";
@@ -29,3 +30,8 @@ export const UserProvider = ({ children }) => {
 };
 
 export const useUser = () => useContext(UserContext);
+=======
+import { createContext } from "react";
+
+export const UserContext = createContext();
+>>>>>>> 66cafe3 (Guardar cambios de estructura)
