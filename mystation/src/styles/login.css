@@ -1,0 +1,36 @@
+body {
+    background-color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    background: white;
+}
+
+.card-title {
+    color: #f500a1;
+    /* fucsia */
+    font-weight: bold;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    /* azul */
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
