@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import { UserContext } from './UserContext';
 import { authReducer } from '../reducers/authReducer';
-import { useAuthenticate } from '../hooks/useAuthenticate';
+import { useAuthenticate } from "../../hooks/useAuthenticate";
 
 const authInitialState = {
     logged: false,
@@ -10,10 +10,15 @@ const authInitialState = {
 };
 
 const init = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user
-        ? { logged: true, user, errorMessage: null }
-        : authInitialState;
+    try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        return user
+            ? { logged: true, user, errorMessage: null }
+            : authInitialState;
+    } catch (e) {
+        console.warn("Invalid user in localStorage");
+        return authInitialState;
+    }
 };
 
 export const UserProvider = ({ children }) => {

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useForm } from '../../hooks/useForm';
-import { UserContext } from '../../auth/contexts/UserContext';
+import { UserContext } from '../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/login.css';
 
@@ -22,10 +22,10 @@ export const LoginPage = () => {
     return (
         <div className="login-container">
             <div className="card col-md-4">
-                <h4 className="card-title mb-4">Iniciar sesión</h4>
+                <h4 className="card-title mb-4">Login</h4>
 
                 <div className="form-group mb-3">
-                    <label>Correo electrónico</label>
+                    <label>Email</label>
                     <input
                         type="email"
                         className="form-control"
@@ -37,7 +37,7 @@ export const LoginPage = () => {
                 </div>
 
                 <div className="form-group mb-4">
-                    <label>Contraseña</label>
+                    <label>Password</label>
                     <input
                         type="password"
                         className="form-control"
@@ -53,7 +53,7 @@ export const LoginPage = () => {
                         className="btn btn-primary btn-lg"
                         onClick={onLoginUser}
                     >
-                        Iniciar sesión
+                        LOGIN
                     </button>
                 </div>
             </div>

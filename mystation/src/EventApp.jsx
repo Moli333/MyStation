@@ -1,5 +1,5 @@
-import { UserProvider } from "./auth/contexts/UserProvider";
 import { AppRouter } from "./router/AppRouter";
+import { UserProvider } from './auth/contexts/UserProvider';
 
 export const EventApp = () => {
     console.log('App loaded');

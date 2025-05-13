@@ -1,6 +1,6 @@
 import { Navigate, Routes, Route } from "react-router-dom";
 import { HomePage } from "../events/pages/HomePage";
-import { LoginPage } from "../events/pages/LoginPage";
+import { LoginPage } from "../auth/pages/LoginPage";
 import { useContext } from "react";
 import { UserContext } from "../auth/contexts/UserContext";
 
@@ -8,6 +8,15 @@ export const AppRouter = () => {
     const {
         userState: { logged },
     } = useContext(UserContext);
+
+    if (logged) {
+    return (
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/*" element={<Navigate to="/" />} />
+        </Routes>
+    );
+}
 
     if (!logged) {
         return (
@@ -27,5 +36,3 @@ export const AppRouter = () => {
     );
 
 };
-console.log("🧭 AppRouter cargado");
-

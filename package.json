@@ -4,5 +4,9 @@
     "bootstrap": "^5.3.6",
     "firebase": "^11.7.1",
     "react-router-dom": "^7.6.0"
+  },
+  "scripts": {
+    "clean": "rm -rf node_modules dist .vite",
+    "reinstall": "npm run clean && npm install"
   }
 }
