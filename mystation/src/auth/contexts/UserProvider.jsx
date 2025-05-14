@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useContext } from 'react';
 import { UserContext } from './UserContext';
 import { authReducer } from '../reducers/authReducer';
 <<<<<<< HEAD
@@ -52,3 +52,5 @@ export const UserProvider = ({ children }) => {
         </UserContext.Provider>
     );
 };
+
+export const useUser = () => useContext(UserContext);

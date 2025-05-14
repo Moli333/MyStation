@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CLIENT_ID = "d0d04f92a7d7456393e677a9ccf4341c";
+<<<<<<< HEAD
 const REDIRECT_URI = "https://my-station-8ad14.web.app/callback";
+=======
+const REDIRECT_URI = "https://my-station-8ad14.web.app/";
+>>>>>>> 8fc3168 (Se guardan cambios generados en pro de mejorar el acople de Spotify y Firebase en la APP)
 
 export default function SpotifyCallback() {
     const navigate = useNavigate();

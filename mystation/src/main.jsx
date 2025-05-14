@@ -11,6 +11,7 @@ import { UserProvider } from './auth/contexts/UserProvider'; // ✅ Importa el p
 import { UserProvider } from './auth/contexts/UserProvider'; // ✅ Importa el provider
 >>>>>>> 9933808 (Se guardan cambios y se  confirma que App tiene la estructura  en React y usando correctamente Vite)
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/login.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
