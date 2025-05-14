@@ -1,5 +1,3 @@
-// src/auth/pages/LoginPage.jsx
-
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from "../contexts/UserProvider";
@@ -25,7 +23,7 @@ export const LoginPage = () => {
 
     useEffect(() => {
         const handleMessage = (event) => {
-            if (event.origin !== "http://127.0.0.1:3000") return; // <-- cambia si usas otro puerto
+            if (event.origin !== "http://127.0.0.1:3000") return;
             const user = event.data;
             if (user?.email) {
                 saveKnownAccount(user.email, 'spotify');
@@ -50,29 +48,20 @@ export const LoginPage = () => {
         let user = null;
 
         if (provider === 'google') {
-            console.log("Iniciando login con Google...");
             user = await signInWithGoogle();
-            console.log("Usuario de Google:", user);
         } else if (provider === 'facebook') {
-            console.log("Iniciando login con Facebook...");
             user = await signInWithFacebook();
-            console.log("Usuario de Facebook:", user);
         } else if (provider === 'spotify') {
-            console.log("Redirigiendo a login de Spotify...");
-            redirectToSpotifyLogin(); // Spotify maneja el login por redirección
+            redirectToSpotifyLogin();
             return;
         }
 
         if (user?.email) {
-            console.log(`Login exitoso con ${provider}. Email:`, user.email);
             saveKnownAccount(user.email, provider);
             login(user);
             navigate('/');
-        } else {
-            console.warn(`No se pudo iniciar sesión con ${provider}`);
         }
     };
-
 
     const handleAccountClick = async (account) => {
         setEmail(account.email);
@@ -135,63 +124,67 @@ export const LoginPage = () => {
                 </button>
 
                 <div className="text-center mt-3">
-                    <span>Don't have an account?</span>
-                    <Link to="/register">Register here</Link>
+                    <span>¿No tienes cuenta?</span>
+                    <Link to="/register"> Regístrate aquí</Link>
                 </div>
             </div>
 
             <style>{`
-            
-        body {
-            background-color:rgb(10, 36, 19) !important;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color:rgb(16, 48, 19);
-        }
-        .card {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            padding: 2rem;
-            background: white;
-        }
-        .card-title {
-            color:rgb(7, 87, 31);
-            font-weight: bold;
-            text-align: center;
-        }
-        .btn-primary {
-            background-color:rgb(10, 48, 15);
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color:rgb(8, 36, 19);
-        }
-        .provider-suggestions {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: -10px;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            background: white;
-            z-index: 1000;
-            position: absolute;
-            width: 100%;
-        }
-        .suggestion-item {
-            padding: 10px;
-            cursor: pointer;
-        }
-        .suggestion-item:hover {
-            background-color: rgb(103, 199, 236);
-        }
-    `}</style>
+                body {
+                    margin: 0;
+                    padding: 0;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+                .login-container {
+                    min-height: 100vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-image: 
+                        linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)),
+                        url('https://maldita.es/uploads/images/2024/06/665efad1a992dspotify-algoritmo-2-png.png');
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                }
+                .card {
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                    z-index: 1;
+                }
+                .card-title {
+                    color: rgb(7, 87, 31);
+                    font-weight: bold;
+                    text-align: center;
+                }
+                .btn-primary {
+                    background-color: rgb(10, 48, 15);
+                    border: none;
+                }
+                .btn-primary:hover {
+                    background-color: rgb(8, 36, 19);
+                }
+                .provider-suggestions {
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    margin-top: -10px;
+                    margin-bottom: 1rem;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                    background: white;
+                    z-index: 1000;
+                    position: absolute;
+                    width: 100%;
+                }
+                .suggestion-item {
+                    padding: 10px;
+                    cursor: pointer;
+                }
+                .suggestion-item:hover {
+                    background-color: rgb(103, 199, 236);
+                }
+            `}</style>
         </div>
     );
 };

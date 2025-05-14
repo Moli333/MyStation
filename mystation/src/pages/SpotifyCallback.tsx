@@ -2,11 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CLIENT_ID = "d0d04f92a7d7456393e677a9ccf4341c";
-<<<<<<< HEAD
 const REDIRECT_URI = "https://my-station-8ad14.web.app/callback";
-=======
-const REDIRECT_URI = "https://my-station-8ad14.web.app/";
->>>>>>> 8fc3168 (Se guardan cambios generados en pro de mejorar el acople de Spotify y Firebase en la APP)
 
 export default function SpotifyCallback() {
     const navigate = useNavigate();
@@ -43,10 +39,9 @@ export default function SpotifyCallback() {
                 const data = await response.json();
                 console.log("Spotify token response:", data);
 
-                // ✅ Verificación estricta del token
                 if (!data.access_token) {
                     console.error("No se recibió access_token:", data);
-                    localStorage.removeItem("spotify_code_verifier"); // Previene códigos viejos
+                    localStorage.removeItem("spotify_code_verifier");
                     navigate("/");
                     return;
                 }
@@ -57,7 +52,6 @@ export default function SpotifyCallback() {
                     localStorage.setItem("spotify_refresh_token", data.refresh_token);
                 }
 
-                // Verificar formato del token
                 const authHeader = `Bearer ${data.access_token}`;
                 if (!authHeader.startsWith("Bearer ")) {
                     console.error("Formato inválido del access token.");
@@ -66,15 +60,11 @@ export default function SpotifyCallback() {
                     return;
                 }
 
-                console.log("Intentando obtener perfil con access token:", data.access_token);
-
                 const profileRes = await fetch("https://api.spotify.com/v1/me", {
                     headers: {
                         Authorization: authHeader,
                     },
                 });
-
-                console.log("Status de respuesta perfil:", profileRes.status);
 
                 if (profileRes.status === 401) {
                     console.error("Token inválido o expirado. Reautenticando...");
