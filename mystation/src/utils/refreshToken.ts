@@ -9,7 +9,7 @@ export const refreshSpotifyToken = async (refreshToken: string): Promise<string 
                 grant_type: "refresh_token",
                 refresh_token: refreshToken,
                 client_id: "d0d04f92a7d7456393e677a9ccf4341c",
-                client_secret: "https://my-station-8ad14.web.app/callback",
+                client_secret: "TU_CLIENT_SECRET_REAL",
             }),
             {
                 headers: {

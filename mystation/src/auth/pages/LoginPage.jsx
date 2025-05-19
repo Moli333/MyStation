@@ -82,46 +82,51 @@ export const LoginPage = () => {
             <div className="card col-md-4 position-relative">
                 <h4 className="card-title mb-4">Login</h4>
 
-                <label>Email</label>
-                <input
-                    type="email"
-                    className="form-control mb-2"
-                    value={email}
-                    placeholder="Escribe tu correo electrónico"
-                    onFocus={() => setShowProviders(true)}
-                    onBlur={() => setTimeout(() => setShowProviders(false), 200)}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleEmailLogin();
+                }}>
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        className="form-control mb-2"
+                        value={email}
+                        placeholder="Escribe tu correo electrónico"
+                        onFocus={() => setShowProviders(true)}
+                        onBlur={() => setTimeout(() => setShowProviders(false), 200)}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
 
-                {showProviders && (
-                    <div className="provider-suggestions">
-                        {knownAccounts.map((acc, index) => (
-                            <div
-                                key={index}
-                                onClick={() => handleAccountClick(acc)}
-                                className="suggestion-item"
-                            >
-                                {acc.email} ({acc.provider})
-                            </div>
-                        ))}
-                        <div onClick={() => handleProviderSelect('google')} className="suggestion-item">Continuar con Google</div>
-                        <div onClick={() => handleProviderSelect('facebook')} className="suggestion-item">Continuar con Facebook</div>
-                        <div onClick={() => handleProviderSelect('spotify')} className="suggestion-item">Continuar con Spotify</div>
-                    </div>
-                )}
+                    {showProviders && (
+                        <div className="provider-suggestions">
+                            {knownAccounts.map((acc, index) => (
+                                <div
+                                    key={index}
+                                    onClick={() => handleAccountClick(acc)}
+                                    className="suggestion-item"
+                                >
+                                    {acc.email} ({acc.provider})
+                                </div>
+                            ))}
+                            <div onClick={() => handleProviderSelect('google')} className="suggestion-item">Continuar con Google</div>
+                            <div onClick={() => handleProviderSelect('facebook')} className="suggestion-item">Continuar con Facebook</div>
+                            <div onClick={() => handleProviderSelect('spotify')} className="suggestion-item">Continuar con Spotify</div>
+                        </div>
+                    )}
 
-                <label>Password</label>
-                <input
-                    type="password"
-                    className="form-control mb-3"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Escribe tu contraseña"
-                />
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        className="form-control mb-3"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Escribe tu contraseña"
+                    />
 
-                <button className="btn btn-primary btn-lg d-block w-100 mb-3" onClick={handleEmailLogin}>
-                    Login
-                </button>
+                    <button type="submit" className="btn btn-primary btn-lg d-block w-100 mb-3">
+                        Login
+                    </button>
+                </form>
 
                 <div className="text-center mt-3">
                     <span>¿No tienes cuenta?</span>

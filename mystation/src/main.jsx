@@ -15,5 +15,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
-console.log("📦 main.jsx cargado");

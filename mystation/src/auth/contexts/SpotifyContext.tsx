@@ -1,7 +1,5 @@
-// context/SpotifyContext.tsx
-
 import { useEffect, useState, createContext, useContext } from "react"
-import { refreshSpotifyToken } from "../utils/refreshToken"
+import { refreshSpotifyToken } from "../../utils/refreshToken"
 import { useNavigate } from "react-router-dom"
 
 const SpotifyContext = createContext<any>(null)
@@ -10,7 +8,7 @@ export const SpotifyProvider = ({ children }: any) => {
     const [accessToken, setAccessToken] = useState<string | null>(null)
     const [refreshToken, setRefreshToken] = useState<string | null>(null)
 
-    // Función para actualizar tokens
+    //actualizar tokens
     const renovarToken = async () => {
         if (refreshToken) {
             const nuevoToken = await refreshSpotifyToken(refreshToken)
