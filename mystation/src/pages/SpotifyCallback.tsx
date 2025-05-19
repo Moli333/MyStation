@@ -1,102 +1,79 @@
+// src/pages/Callback.jsx
 import { useEffect } from "react";
+import axios from "axios";
+import { useSpotify } from "../auth/contexts/SpotifyContext";
 import { useNavigate } from "react-router-dom";
 
 const CLIENT_ID = "d0d04f92a7d7456393e677a9ccf4341c";
+
 const REDIRECT_URI = "https://my-station-8ad14.web.app/callback";
 
-export default function SpotifyCallback() {
+const Callback = () => {
+    const { setTokens } = useSpotify();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const code = new URLSearchParams(window.location.search).get("code");
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get("code");
         const codeVerifier = localStorage.getItem("spotify_code_verifier");
 
         if (!code || !codeVerifier) {
-            console.error("Faltan code o code_verifier. Reintentando login...");
+            console.error("Faltan 'code' o 'code_verifier'.");
             localStorage.removeItem("spotify_code_verifier");
             navigate("/");
             return;
         }
 
-        const fetchToken = async () => {
+        exchangeCodeForToken(code, codeVerifier);
+    }, []);
+
+    const exchangeCodeForToken = async (code, codeVerifier) => {
+        try {
             const body = new URLSearchParams({
                 grant_type: "authorization_code",
-                code: code,
+                code,
                 redirect_uri: REDIRECT_URI,
                 client_id: CLIENT_ID,
-                code_verifier: codeVerifier
+                code_verifier: codeVerifier,
             });
 
-            try {
-                const response = await fetch("https://accounts.spotify.com/api/token", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: body.toString(),
-                });
+            const res = await axios.post("https://accounts.spotify.com/api/token", body.toString(), {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
 
-                const data = await response.json();
-                console.log("Spotify token response:", data);
+            const { access_token, refresh_token } = res.data;
 
-                if (!data.access_token) {
-                    console.error("No se recibió access_token:", data);
-                    localStorage.removeItem("spotify_code_verifier");
-                    navigate("/");
-                    return;
-                }
-
-                localStorage.setItem("spotify_access_token", data.access_token);
-
-                if (data.refresh_token) {
-                    localStorage.setItem("spotify_refresh_token", data.refresh_token);
-                }
-
-                const authHeader = `Bearer ${data.access_token}`;
-                if (!authHeader.startsWith("Bearer ")) {
-                    console.error("Formato inválido del access token.");
-                    localStorage.removeItem("spotify_code_verifier");
-                    navigate("/");
-                    return;
-                }
-
-                const profileRes = await fetch("https://api.spotify.com/v1/me", {
-                    headers: {
-                        Authorization: authHeader,
-                    },
-                });
-
-                if (profileRes.status === 401) {
-                    console.error("Token inválido o expirado. Reautenticando...");
-                    localStorage.removeItem("spotify_access_token");
-                    localStorage.removeItem("spotify_code_verifier");
-                    navigate("/");
-                    return;
-                }
-
-                const profileData = await profileRes.json();
-                console.log("Datos crudos del perfil:", profileData);
-
-                if (profileData.error?.message === "invalid_token") {
-                    console.error("Token inválido detectado. Reinicia el proceso.");
-                    localStorage.removeItem("spotify_access_token");
-                    localStorage.removeItem("spotify_code_verifier");
-                    navigate("/");
-                    return;
-                }
-
-                localStorage.setItem("spotify_user", JSON.stringify(profileData));
-
-                navigate("/");
-            } catch (error) {
-                console.error("Error en la autenticación con Spotify:", error);
+            if (!access_token) {
+                console.error("No se recibió access_token:", res.data);
                 localStorage.removeItem("spotify_code_verifier");
                 navigate("/");
+                return;
             }
-        };
 
-        fetchToken();
-    }, [navigate]);
+            setTokens(access_token, refresh_token || "");
+            localStorage.setItem("spotify_access_token", access_token);
+            if (refresh_token) {
+                localStorage.setItem("spotify_refresh_token", refresh_token);
+            }
+
+            const profileRes = await axios.get("https://api.spotify.com/v1/me", {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
+            });
+
+            localStorage.setItem("spotify_user", JSON.stringify(profileRes.data));
+            navigate("/dashboard");
+        } catch (error) {
+            console.error("Error durante la autenticación con Spotify:", error);
+            localStorage.removeItem("spotify_code_verifier");
+            navigate("/");
+        }
+    };
 
     return <div>Conectando con Spotify...</div>;
-}
+};
+
+export default Callback;

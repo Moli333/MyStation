@@ -1,4 +1,3 @@
-// src/AppRouter.jsx
 import { Navigate, Routes, Route } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { HomePage } from "../events/pages/HomePage";

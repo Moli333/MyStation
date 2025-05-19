@@ -22,8 +22,7 @@ export const useAuthenticate = (dispatch) => {
             dispatch({ type: authTypes.errors, payload: 'Credenciales inválidas' });
         }
     };
-
-    // Login directo con un objeto de usuario (sin Firebase)
+ //(sin Firebase)
     const login = (user) => {
         localStorage.setItem('user', JSON.stringify(user));
         dispatch({ type: authTypes.login, payload: user });

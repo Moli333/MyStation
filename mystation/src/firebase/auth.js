@@ -1,4 +1,3 @@
-// src/firebase/auth.js
 import { 
     signInWithPopup, 
     signInWithEmailAndPassword, 
@@ -6,7 +5,6 @@ import {
 } from 'firebase/auth';
 import { auth, googleProvider, facebookProvider } from './config';
 
-// Inicio de sesión con Google
 export const signInWithGoogle = async () => {
     try {
         const result = await signInWithPopup(auth, googleProvider);
@@ -18,7 +16,6 @@ export const signInWithGoogle = async () => {
     }
 };
 
-// Inicio de sesión con Facebook
 export const signInWithFacebook = async () => {
     try {
         const result = await signInWithPopup(auth, facebookProvider);
@@ -30,7 +27,6 @@ export const signInWithFacebook = async () => {
     }
 };
 
-// Inicio de sesión con email y contraseña
 export const signInWithEmailPassword = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -42,7 +38,6 @@ export const signInWithEmailPassword = async (email, password) => {
     }
 };
 
-// Registro con email y contraseña
 export const registerWithEmailPassword = async (email, password) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);

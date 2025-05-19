@@ -34,7 +34,7 @@ export const HomePage = () => {
     return (
         <div className="container mt-5">
             <h1>🎧 Bienvenido a MyStation</h1>
-            <p className="lead">Tu espacio para explorar, gestionar y disfrutar música desde Spotify.</p>
+            <p className="lead">Tu espacio para explorar y disfrutar música desde Spotify.</p>
             {userData && (
                 <div className="mt-4">
                     <h4>Hola, {userData.display_name}</h4>
