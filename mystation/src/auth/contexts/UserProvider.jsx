@@ -7,17 +7,18 @@ const authInitialState = {
     logged: false,
     user: null,
     errorMessage: null,
+    checking: true, 
 };
 
 const init = () => {
     try {
         const user = JSON.parse(localStorage.getItem('user'));
         return user
-            ? { logged: true, user, errorMessage: null }
-            : authInitialState;
+            ? { logged: true, user, errorMessage: null, checking: false }
+            : { ...authInitialState, checking: false };
     } catch (e) {
         console.warn("Invalid user in localStorage", e);
-        return authInitialState;
+        return { ...authInitialState, checking: false };
     }
 };
 

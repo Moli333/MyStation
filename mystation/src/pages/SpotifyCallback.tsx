@@ -1,15 +1,15 @@
-// src/pages/Callback.jsx
 import { useEffect } from "react";
 import axios from "axios";
 import { useSpotify } from "../auth/contexts/SpotifyContext";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../auth/contexts/UserProvider";
 
 const CLIENT_ID = "d0d04f92a7d7456393e677a9ccf4341c";
-
 const REDIRECT_URI = "https://my-station-8ad14.web.app/callback";
 
 const Callback = () => {
     const { setTokens } = useSpotify();
+    const { login } = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -52,19 +52,22 @@ const Callback = () => {
                 return;
             }
 
-            setTokens(access_token, refresh_token || "");
-            localStorage.setItem("spotify_access_token", access_token);
-            if (refresh_token) {
-                localStorage.setItem("spotify_refresh_token", refresh_token);
-            }
-
             const profileRes = await axios.get("https://api.spotify.com/v1/me", {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
             });
 
-            localStorage.setItem("spotify_user", JSON.stringify(profileRes.data));
+            const spotifyUser = {
+                email: profileRes.data.email,
+                uid: profileRes.data.id,
+                displayName: profileRes.data.display_name,
+                photoURL: profileRes.data.images?.[0]?.url || "",
+            };
+
+            localStorage.setItem("user", JSON.stringify(spotifyUser));
+            login(spotifyUser);
+            setTokens(access_token, refresh_token || "");
             navigate("/dashboard");
         } catch (error) {
             console.error("Error durante la autenticación con Spotify:", error);
@@ -77,3 +80,4 @@ const Callback = () => {
 };
 
 export default Callback;
+

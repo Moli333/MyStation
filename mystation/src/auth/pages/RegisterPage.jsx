@@ -51,6 +51,7 @@ export const RegisterPage = () => {
                     className="form-control mb-3"
                     value={form.password}
                     onChange={onChange}
+                    autoComplete="new-password"
                 />
                 <input
                     type="password"
@@ -59,6 +60,7 @@ export const RegisterPage = () => {
                     className="form-control mb-3"
                     value={form.confirmPassword}
                     onChange={onChange}
+                    autoComplete="new-password"
                 />
 
                 {error && <div className="alert alert-danger">{error}</div>}

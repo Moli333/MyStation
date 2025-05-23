@@ -1,11 +1,15 @@
 import { AppRouter } from "./router/AppRouter";
 import { UserProvider } from './auth/contexts/UserProvider';
+import { SpotifyProvider } from "./auth/contexts/SpotifyContext";
 
-export const EventApp = () => {
-    console.log('App loaded');
+function EventApp() {
     return (
-        <UserProvider>
-            <AppRouter />
-        </UserProvider>
+        <SpotifyProvider>
+            <UserProvider>
+                <AppRouter />
+            </UserProvider>
+        </SpotifyProvider>
     );
-};
+}
+
+export default EventApp;

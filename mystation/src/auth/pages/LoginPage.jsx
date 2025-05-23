@@ -5,6 +5,7 @@ import { redirectToSpotifyLogin } from "../spotifyAuth";
 import {
     signInWithGoogle,
     signInWithFacebook,
+
     signInWithEmailPassword,
 } from "../../firebase/auth";
 
@@ -12,21 +13,13 @@ export const LoginPage = () => {
     const { login } = useUser();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showProviders, setShowProviders] = useState(false);
-    const [knownAccounts, setKnownAccounts] = useState([]);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem('knownAccounts')) || [];
-        setKnownAccounts(stored);
-    }, []);
 
     useEffect(() => {
         const handleMessage = (event) => {
             if (event.origin !== "http://127.0.0.1:3000") return;
             const user = event.data;
             if (user?.email) {
-                saveKnownAccount(user.email, 'spotify');
                 login(user);
                 navigate('/');
             }
@@ -34,15 +27,6 @@ export const LoginPage = () => {
         window.addEventListener("message", handleMessage);
         return () => window.removeEventListener("message", handleMessage);
     }, [login, navigate]);
-
-    const saveKnownAccount = (email, provider) => {
-        const stored = JSON.parse(localStorage.getItem('knownAccounts')) || [];
-        const exists = stored.find(acc => acc.email === email);
-        if (!exists) {
-            const updated = [...stored, { email, provider }];
-            localStorage.setItem('knownAccounts', JSON.stringify(updated));
-        }
-    };
 
     const handleProviderSelect = async (provider) => {
         let user = null;
@@ -57,21 +41,14 @@ export const LoginPage = () => {
         }
 
         if (user?.email) {
-            saveKnownAccount(user.email, provider);
             login(user);
             navigate('/');
         }
     };
 
-    const handleAccountClick = async (account) => {
-        setEmail(account.email);
-        await handleProviderSelect(account.provider);
-    };
-
     const handleEmailLogin = async () => {
         const user = await signInWithEmailPassword(email, password);
         if (user) {
-            saveKnownAccount(email, 'email');
             login(user);
             navigate('/');
         }
@@ -82,51 +59,42 @@ export const LoginPage = () => {
             <div className="card col-md-4 position-relative">
                 <h4 className="card-title mb-4">Login</h4>
 
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    handleEmailLogin();
-                }}>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        className="form-control mb-2"
-                        value={email}
-                        placeholder="Escribe tu correo electrónico"
-                        onFocus={() => setShowProviders(true)}
-                        onBlur={() => setTimeout(() => setShowProviders(false), 200)}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+<form onSubmit={(e) => {
+    e.preventDefault();
+    handleEmailLogin();
+}}>
+    <label>Email</label>
+    <input
+        className="form-control mb-2"
+        type="email"
+        placeholder="Escribe tu correo electrónico"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        autoComplete="username"
+    />
 
-                    {showProviders && (
-                        <div className="provider-suggestions">
-                            {knownAccounts.map((acc, index) => (
-                                <div
-                                    key={index}
-                                    onClick={() => handleAccountClick(acc)}
-                                    className="suggestion-item"
-                                >
-                                    {acc.email} ({acc.provider})
-                                </div>
-                            ))}
-                            <div onClick={() => handleProviderSelect('google')} className="suggestion-item">Continuar con Google</div>
-                            <div onClick={() => handleProviderSelect('facebook')} className="suggestion-item">Continuar con Facebook</div>
-                            <div onClick={() => handleProviderSelect('spotify')} className="suggestion-item">Continuar con Spotify</div>
-                        </div>
-                    )}
+    <input
+        className="form-control mb-3"
+        type="password"
+        placeholder="Escribe tu contraseña"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        autoComplete="current-password"
+    />
 
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        className="form-control mb-3"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Escribe tu contraseña"
-                    />
+    <button type="submit" className="btn btn-primary btn-lg d-block w-100 mb-3">
+        Iniciar sesión
+    </button>
+</form>
 
-                    <button type="submit" className="btn btn-primary btn-lg d-block w-100 mb-3">
-                        Login
-                    </button>
-                </form>
+
+                <div className="text-center">
+                    <hr />
+                    <p>O continúa con</p>
+                    <button onClick={() => handleProviderSelect('google')} className="btn btn-outline-danger w-100 mb-2">Google</button>
+                    <button onClick={() => handleProviderSelect('facebook')} className="btn btn-outline-primary w-100 mb-2">Facebook</button>
+                    <button onClick={() => handleProviderSelect('spotify')} className="btn btn-outline-success w-100">Spotify</button>
+                </div>
 
                 <div className="text-center mt-3">
                     <span>¿No tienes cuenta?</span>
@@ -135,11 +103,6 @@ export const LoginPage = () => {
             </div>
 
             <style>{`
-                body {
-                    margin: 0;
-                    padding: 0;
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                }
                 .login-container {
                     min-height: 100vh;
                     display: flex;
@@ -170,24 +133,6 @@ export const LoginPage = () => {
                 }
                 .btn-primary:hover {
                     background-color: rgb(8, 36, 19);
-                }
-                .provider-suggestions {
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    margin-top: -10px;
-                    margin-bottom: 1rem;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                    background: white;
-                    z-index: 1000;
-                    position: absolute;
-                    width: 100%;
-                }
-                .suggestion-item {
-                    padding: 10px;
-                    cursor: pointer;
-                }
-                .suggestion-item:hover {
-                    background-color: rgb(103, 199, 236);
                 }
             `}</style>
         </div>
