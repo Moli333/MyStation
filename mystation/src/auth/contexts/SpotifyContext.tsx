@@ -52,7 +52,6 @@ export const SpotifyProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-// ✅ ESTA PARTE ES FUNDAMENTAL PARA QUE NO MARQUE ERROR
 export const useSpotify = () => {
     const context = useContext(SpotifyContext);
     if (!context) {

@@ -1,3 +1,4 @@
+// src/pages/Callback.jsx
 import { useEffect } from "react";
 import axios from "axios";
 import { useSpotify } from "../auth/contexts/SpotifyContext";
@@ -18,14 +19,14 @@ const Callback = () => {
         const codeVerifier = localStorage.getItem("spotify_code_verifier");
 
         if (!code || !codeVerifier) {
-            console.error("Faltan 'code' o 'code_verifier'.");
+            console.error("❌ Falta 'code' o 'code_verifier' para autenticación con Spotify.");
             localStorage.removeItem("spotify_code_verifier");
             navigate("/");
             return;
         }
 
         exchangeCodeForToken(code, codeVerifier);
-    }, []);
+    }, [navigate]);
 
     const exchangeCodeForToken = async (code, codeVerifier) => {
         try {
@@ -37,46 +38,52 @@ const Callback = () => {
                 code_verifier: codeVerifier,
             });
 
-            const res = await axios.post("https://accounts.spotify.com/api/token", body.toString(), {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            });
+            const tokenResponse = await axios.post(
+                "https://accounts.spotify.com/api/token",
+                body.toString(),
+                {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                }
+            );
 
-            const { access_token, refresh_token } = res.data;
+            const { access_token, refresh_token } = tokenResponse.data;
 
             if (!access_token) {
-                console.error("No se recibió access_token:", res.data);
-                localStorage.removeItem("spotify_code_verifier");
-                navigate("/");
-                return;
+                console.error("No se recibió un access_token:", tokenResponse.data);
+                throw new Error("No access token received.");
             }
 
-            const profileRes = await axios.get("https://api.spotify.com/v1/me", {
+            const profileResponse = await axios.get("https://api.spotify.com/v1/me", {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
             });
 
+            const profile = profileResponse.data;
+
             const spotifyUser = {
-                email: profileRes.data.email,
-                uid: profileRes.data.id,
-                displayName: profileRes.data.display_name,
-                photoURL: profileRes.data.images?.[0]?.url || "",
+                email: profile.email,
+                uid: profile.id,
+                displayName: profile.display_name,
+                photoURL: profile.images?.[0]?.url || "",
+                provider: "spotify",
             };
 
             localStorage.setItem("user", JSON.stringify(spotifyUser));
             login(spotifyUser);
             setTokens(access_token, refresh_token || "");
+
             navigate("/dashboard");
         } catch (error) {
-            console.error("Error durante la autenticación con Spotify:", error);
+            console.error("❌ Error durante la autenticación con Spotify:", error);
             localStorage.removeItem("spotify_code_verifier");
             navigate("/");
         }
     };
 
-    return <div>Conectando con Spotify...</div>;
+    return <div>🔄 Conectando con Spotify...</div>;
 };
 
 export default Callback;

@@ -1,3 +1,4 @@
+//src/auth/contexts/UserProvider.jsx
 import { useReducer, useContext } from 'react';
 import { UserContext } from './UserContext';
 import { authReducer } from '../reducers/authReducer';

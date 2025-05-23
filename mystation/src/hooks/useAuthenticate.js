@@ -1,9 +1,14 @@
-import { signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, } from "firebase/auth";
+import {
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    FacebookAuthProvider,
+    GoogleAuthProvider,
+    signOut, 
+} from "firebase/auth";
 import { firebaseAuth } from "../firebase/config";
 import { authTypes } from "../auth/types/authTypes";
 
 export const useAuthenticate = (dispatch) => {
-    // Login con Firebase
     const loginWithFirebase = async ({ email, password }) => {
         try {
             const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
@@ -22,7 +27,7 @@ export const useAuthenticate = (dispatch) => {
             dispatch({ type: authTypes.errors, payload: 'Credenciales inválidas' });
         }
     };
-    //Login con Google
+
     const loginWithGoogle = async () => {
         try {
             const provider = new GoogleAuthProvider();
@@ -45,7 +50,6 @@ export const useAuthenticate = (dispatch) => {
         }
     };
 
-    //Login con Facebook
     const loginWithFacebook = async () => {
         try {
             const provider = new FacebookAuthProvider();
@@ -68,12 +72,10 @@ export const useAuthenticate = (dispatch) => {
         }
     };
 
-    // Login sin Firebase
     const login = (user) => {
         localStorage.setItem('user', JSON.stringify(user));
         dispatch({ type: authTypes.login, payload: user });
     };
-
 
     const logout = async () => {
         try {
@@ -85,5 +87,11 @@ export const useAuthenticate = (dispatch) => {
         dispatch({ type: authTypes.logout });
     };
 
-    return { login, loginWithFirebase, logout };
+    return {
+        login,
+        loginWithFirebase,
+        loginWithGoogle,
+        loginWithFacebook,
+        logout,
+    };
 };
