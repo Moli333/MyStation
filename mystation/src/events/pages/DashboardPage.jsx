@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../auth/contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
+import "../../styles/Dashboardpage.css";
 
 const DashboardPage = () => {
     const { userState, logout } = useUser();
     const navigate = useNavigate();
     
-    // Log para debugging
-    console.log("DashboardPage - Estado de usuario:", userState);
-    
-    // Redirigir si no hay usuario autenticado
     useEffect(() => {
         if (!userState.logged && !userState.checking) {
             console.log("No hay usuario autenticado, redirigiendo a /login");
@@ -70,15 +67,13 @@ const DashboardPage = () => {
             // Forzar redirección incluso si hay error
             navigate("/login");
         }
-    };
-
-    return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <h1 style={styles.title}>¡Bienvenido a tu Dashboard!</h1>
+    };    return (
+        <div className="dashboard-container">
+            <div className="dashboard-card">
+                <h1 className="dashboard-title">¡Bienvenido a tu Dashboard!</h1>
 
                 {userState.user ? (
-                    <div style={styles.userInfo}>
+                    <div className="user-info">
                         <img
                             src={
                                 spotifyProfile?.images?.[0]?.url ||
@@ -86,98 +81,65 @@ const DashboardPage = () => {
                                 "https://via.placeholder.com/150"
                             }
                             alt="User avatar"
-                            style={styles.avatar}
+                            className="user-avatar"
                         />
-                        <p><strong>Nombre:</strong> {spotifyProfile?.display_name || userState.user.displayName}</p>
-                        <p><strong>Email:</strong> {spotifyProfile?.email || userState.user.email}</p>
-                        <p><strong>UID:</strong> {userState.user.uid}</p>
+                        <div className="user-details">
+                            <p><strong>Nombre:</strong> {spotifyProfile?.display_name || userState.user.displayName || "Usuario"}</p>
+                            <p><strong>Email:</strong> {spotifyProfile?.email || userState.user.email}</p>
+                            <p><strong>UID:</strong> {userState.user.uid}</p>
+                        </div>
 
-                        <button style={styles.logoutBtn} onClick={handleLogout}>
+                        <button className="logout-btn" onClick={handleLogout}>
                             Cerrar sesión
-                        </button>
-
-                        {accessToken && (
-                            <div style={styles.spotifySection}>
+                        </button>                        {accessToken && (
+                            <div className="spotify-section">
                                 <h2>🎧 Tu música en Spotify</h2>
 
                                 <h3>🎵 Canciones reproducidas recientemente</h3>
-                                <ul>
-                                    {recentTracks.map((item, index) => (
-                                        <li key={index}>
+                                <ul className="music-list">
+                                    {recentTracks.length > 0 ? recentTracks.map((item, index) => (
+                                        <li key={index} className="music-item">
                                             {item.track.name} – {item.track.artists.map(artist => artist.name).join(", ")}
                                         </li>
-                                    ))}
+                                    )) : (
+                                        <p className="no-data">No hay canciones recientes</p>
+                                    )}
                                 </ul>
 
                                 <h3>🌟 Artistas favoritos</h3>
-                                <ul>
-                                    {topArtists.map((artist, index) => (
-                                        <li key={index}>{artist.name}</li>
-                                    ))}
+                                <ul className="music-list">
+                                    {topArtists.length > 0 ? topArtists.map((artist, index) => (
+                                        <li key={index} className="music-item artist-item">
+                                            {artist.name}
+                                        </li>
+                                    )) : (
+                                        <p className="no-data">No hay artistas favoritos</p>
+                                    )}
                                 </ul>
 
                                 <h3>🎶 Canciones favoritas</h3>
-                                <ul>
-                                    {topTracks.map((track, index) => (
-                                        <li key={index}>
+                                <ul className="music-list">
+                                    {topTracks.length > 0 ? topTracks.map((track, index) => (
+                                        <li key={index} className="music-item">
                                             {track.name} – {track.artists.map(artist => artist.name).join(", ")}
                                         </li>
-                                    ))}
+                                    )) : (
+                                        <p className="no-data">No hay canciones favoritas</p>
+                                    )}
                                 </ul>
                             </div>
-                        )}
-                    </div>
+                        )}                    </div>
                 ) : (
-                    <p>No hay información de usuario.</p>
+                    <div className="no-data">
+                        <p>No hay información de usuario disponible.</p>
+                        <button className="logout-btn" onClick={handleLogout}>
+                            Volver al login
+                        </button>
+                    </div>
                 )}
             </div>
         </div>
     );
-};
-
-const styles = {
-    container: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#f0f4f8",
-    },
-    card: {
-        background: "white",
-        padding: "2rem",
-        borderRadius: "10px",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        maxWidth: "600px",
-        width: "100%",
-    },
-    title: {
-        color: "#1DB954",
-        marginBottom: "1.5rem",
-        textAlign: "center",
-    },
-    userInfo: {
-        textAlign: "center",
-    },
-    avatar: {
-        width: "120px",
-        height: "120px",
-        borderRadius: "50%",
-        marginBottom: "1rem",
-    },
-    logoutBtn: {
-        backgroundColor: "#dc3545",
-        color: "#fff",
-        border: "none",
-        padding: "0.5rem 1rem",
-        borderRadius: "5px",
-        cursor: "pointer",
-        marginTop: "1rem",
-    },
-    spotifySection: {
-        marginTop: "2rem",
-        textAlign: "left",
-    },
 };
 
 export default DashboardPage;
