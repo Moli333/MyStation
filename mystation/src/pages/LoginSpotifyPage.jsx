@@ -9,6 +9,7 @@ function generateCodeVerifier(length = 128) {
         .replace(/=/g, "");
 }
 
+
 async function generateCodeChallenge(codeVerifier) {
     const encoder = new TextEncoder();
     const data = encoder.encode(codeVerifier);

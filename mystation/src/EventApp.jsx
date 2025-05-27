@@ -6,6 +6,7 @@ import SpotifyCallback from './pages/SpotifyCallback';
 import ProtectedRoute from './router/ProtectedRoute';
 import { useEffect } from 'react';
 
+
 const generateRandomString = (length) => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     return Array.from({ length }, () =>

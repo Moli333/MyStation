@@ -3,6 +3,7 @@ import { useUser } from "../../auth/contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Dashboardpage.css";
 
+
 const DashboardPage = () => {
     const { userState, logout } = useUser();
     const navigate = useNavigate();
