@@ -5,6 +5,17 @@ import { useNavigate } from "react-router-dom";
 const DashboardPage = () => {
     const { userState, logout } = useUser();
     const navigate = useNavigate();
+    
+    // Log para debugging
+    console.log("DashboardPage - Estado de usuario:", userState);
+    
+    // Redirigir si no hay usuario autenticado
+    useEffect(() => {
+        if (!userState.logged && !userState.checking) {
+            console.log("No hay usuario autenticado, redirigiendo a /login");
+            navigate("/login");
+        }
+    }, [userState.logged, userState.checking, navigate]);
 
     const [spotifyProfile, setSpotifyProfile] = useState(null);
     const [recentTracks, setRecentTracks] = useState([]);
@@ -47,12 +58,18 @@ const DashboardPage = () => {
         };
 
         fetchSpotifyData();
-    }, [accessToken]);
-
-    const handleLogout = () => {
-        logout();
-        localStorage.clear();
-        navigate("/login");
+    }, [accessToken]);    const handleLogout = () => {
+        console.log("Iniciando proceso de logout");
+        try {
+            logout();
+            localStorage.clear();
+            console.log("Logout exitoso, redirigiendo a /login");
+            navigate("/login");
+        } catch (error) {
+            console.error("Error durante logout:", error);
+            // Forzar redirección incluso si hay error
+            navigate("/login");
+        }
     };
 
     return (

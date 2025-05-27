@@ -9,22 +9,53 @@ import { firebaseAuth } from "../firebase/config";
 import { authTypes } from "../auth/types/authTypes";
 
 export const useAuthenticate = (dispatch) => {
+    // Función para verificar la sesión actual al iniciar la app
+    const checkAuthStatus = () => {
+        try {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData && userData.email && userData.uid) {
+                console.log("Usuario encontrado en localStorage:", userData);
+                dispatch({ type: authTypes.login, payload: userData });
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error("Error al verificar el estado de autenticación:", error);
+            return false;
+        }
+    };
+    
     const loginWithFirebase = async ({ email, password }) => {
         try {
+            console.log("Intentando iniciar sesión con email:", email);
             const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
             const user = userCredential.user;
+            console.log("Inicio de sesión exitoso, user:", user);
 
             const userData = {
                 email: user.email,
                 uid: user.uid,
+                displayName: user.displayName || email.split('@')[0],
+                photoURL: user.photoURL || null,
             };
 
             localStorage.setItem('user', JSON.stringify(userData));
             dispatch({ type: authTypes.login, payload: userData });
+            console.log("Usuario guardado en localStorage y estado actualizado");
+            return userData; // Return the user data for confirmation
 
         } catch (error) {
             console.error('Login error:', error);
-            dispatch({ type: authTypes.errors, payload: 'Credenciales inválidas' });
+            let errorMessage = 'Credenciales inválidas';
+            if (error.code === 'auth/user-not-found') {
+                errorMessage = 'Este correo no está registrado.';
+            } else if (error.code === 'auth/wrong-password') {
+                errorMessage = 'Contraseña incorrecta.';
+            } else if (error.code === 'auth/invalid-credential') {
+                errorMessage = 'Credenciales inválidas.';
+            }
+            dispatch({ type: authTypes.errors, payload: errorMessage });
+            throw error; // Re-throw to allow handling in the component
         }
     };
 
@@ -93,5 +124,6 @@ export const useAuthenticate = (dispatch) => {
         loginWithGoogle,
         loginWithFacebook,
         logout,
+        checkAuthStatus, // Exponer la función para verificar el estado de autenticación
     };
 };

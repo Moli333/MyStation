@@ -4,6 +4,7 @@ import { HomePage } from "../events/pages/HomePage";
 import { LoginPage } from "../auth/pages/LoginPage";
 import { RegisterPage } from "../auth/pages/RegisterPage";
 import SpotifyCallback from "../pages/SpotifyCallback";
+import DashboardPage from "../events/pages/DashboardPage";
 import ProtectedRoute from "../router/ProtectedRoute";
 
 const generateRandomString = (length) => {
@@ -26,11 +27,17 @@ export const AppRouter = () => {
 
                 {/* Rutas públicas */}
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-
-                {/* Rutas protegidas */}
+                <Route path="/register" element={<RegisterPage />} />                {/* Rutas protegidas */}
                 <Route
                     path="/"
+                    element={
+                        <ProtectedRoute>
+                            <DashboardPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/home"
                     element={
                         <ProtectedRoute>
                             <HomePage />
