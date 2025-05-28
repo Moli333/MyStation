@@ -5,7 +5,7 @@ import RegisterPage from './auth/pages/RegisterPage';
 import SpotifyCallback from './pages/SpotifyCallback';
 import ProtectedRoute from './router/ProtectedRoute';
 import { useEffect } from 'react';
-
+import ExperienciasPage from './events/pages/ExperienciasPage';
 
 const generateRandomString = (length) => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -25,7 +25,9 @@ const EventApp = () => {
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
-                <Route path="/callback" element={<SpotifyCallback />} />                <Route
+                <Route path="/callback" element={<SpotifyCallback />} />
+                <Route path="/experiencias" element={<ExperienciasPage />} />
+                <Route
                     path="/"
                     element={
                         <ProtectedRoute>

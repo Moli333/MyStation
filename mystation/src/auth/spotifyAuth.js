@@ -1,4 +1,4 @@
-const CLIENT_ID = "a1b518cc50e64d8e93a1e73f40afba98";
+const CLIENT_ID = "d0d04f92a7d7456393e677a9ccf4341c";
 const REDIRECT_URI = "http://127.0.0.1:3000/callback";
 const SCOPE = "user-read-private user-read-email user-read-recently-played user-top-read";
 

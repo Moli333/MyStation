@@ -9,7 +9,7 @@ export const refreshSpotifyToken = async (refreshToken: string): Promise<string 
             new URLSearchParams({
                 grant_type: "refresh_token",
                 refresh_token: refreshToken,
-                client_id: "a1b518cc50e64d8e93a1e73f40afba98",
+                client_id: "d0d04f92a7d7456393e677a9ccf4341c",
                 client_secret: "TU_CLIENT_SECRET_REAL",
             }),
             {
