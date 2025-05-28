@@ -4,16 +4,34 @@ import PropTypes from "prop-types";
 
 const ProtectedRoute = ({ children }) => {
     const { userState } = useUser();
+    
+    // Para debugging
+    console.log("ProtectedRoute - Estado de usuario:", userState);
 
     if (userState.checking) {
-        return <div>Cargando usuario...</div>;
+        return (
+            <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                height: '100vh',
+                flexDirection: 'column'
+            }}>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Cargando...</span>
+                </div>
+                <p className="mt-3">Verificando autenticación...</p>
+            </div>
+        );
     }
 
     if (!userState.logged) {
+        console.log("Usuario no autenticado, redirigiendo a /login");
         return <Navigate to="/login" replace />;
     }
 
-    return  children;
+    console.log("Usuario autenticado, mostrando contenido protegido");
+    return children;
 };
 
 ProtectedRoute.propTypes = {

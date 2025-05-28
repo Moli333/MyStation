@@ -5,8 +5,9 @@ import { useSpotify } from "../auth/contexts/SpotifyContext";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../auth/contexts/UserProvider";
 
-const CLIENT_ID = "d0d04f92a7d7456393e677a9ccf4341c";
-const REDIRECT_URI = "https://my-station-8ad14.web.app/callback";
+
+const CLIENT_ID = "a1b518cc50e64d8e93a1e73f40afba98";
+const REDIRECT_URI = "http://127.0.0.1:3000/callback";
 
 const Callback = () => {
     const { setTokens } = useSpotify();

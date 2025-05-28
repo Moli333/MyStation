@@ -10,6 +10,7 @@ const SpotifyDashboard = () => {
 
     useEffect(() => {
         if (!accessToken) return;
+        
 
         const fetchSpotifyData = async () => {
             try {

@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
 import { SpotifyProvider } from './auth/contexts/SpotifyContext';
 import { UserProvider } from './auth/contexts/UserProvider';
 import EventApp from './EventApp';
@@ -12,9 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <SpotifyProvider>
       <UserProvider>
-        <BrowserRouter>
-          <EventApp />
-        </BrowserRouter>
+        <EventApp />
       </UserProvider>
     </SpotifyProvider>
   </React.StrictMode>

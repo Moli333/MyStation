@@ -11,9 +11,7 @@ export const RegisterPage = () => {
 
     const onChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
-    };
-
-    const onRegister = async () => {
+    };    const onRegister = async () => {
         const { email, password, confirmPassword } = form;
 
         if (password !== confirmPassword) {
@@ -21,13 +19,27 @@ export const RegisterPage = () => {
         }
 
         try {
+            setError(null);
             const user = await registerWithEmailPassword(email, password);
             if (user) {
+                console.log("Usuario registrado correctamente:", user);
+                // Mostrar mensaje de éxito
+                alert("¡Registro exitoso! Ahora puedes iniciar sesión.");
                 navigate('/login');
             }
         } catch (err) {
-            console.error(err);
-            setError('Error al registrar usuario');
+            console.error("Error al registrar:", err);
+            
+            // Mostrar un mensaje de error más específico
+            if (err.code === 'auth/email-already-in-use') {
+                setError('Este correo electrónico ya está registrado');
+            } else if (err.code === 'auth/invalid-email') {
+                setError('Correo electrónico no válido');
+            } else if (err.code === 'auth/weak-password') {
+                setError('La contraseña es demasiado débil');
+            } else {
+                setError('Error al registrar usuario: ' + (err.message || err));
+            }
         }
     };
 

@@ -1,5 +1,5 @@
 //src/auth/contexts/UserProvider.jsx
-import { useReducer, useContext } from 'react';
+import { useReducer, useContext, useEffect } from 'react';
 import { UserContext } from './UserContext';
 import { authReducer } from '../reducers/authReducer';
 import { useAuthenticate } from "../../hooks/useAuthenticate";
@@ -25,10 +25,38 @@ const init = () => {
 
 export const UserProvider = ({ children }) => {
     const [userState, dispatch] = useReducer(authReducer, authInitialState, init);
-    const { login, logout } = useAuthenticate(dispatch);
+    const { login, logout, loginWithFirebase, loginWithGoogle, loginWithFacebook } = useAuthenticate(dispatch);
+
+    // Agregar useEffect para debugging
+    useEffect(() => {
+        console.log("Estado actual del usuario en UserProvider:", userState);
+    }, [userState]);
+
+    // Verificar si hay un usuario en localStorage al montar el componente
+    useEffect(() => {
+        try {
+            const savedUser = localStorage.getItem('user');
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+                if (userData && userData.email) {
+                    console.log("Usuario encontrado en localStorage:", userData);
+                    dispatch({ type: '[AUTH] login', payload: userData });
+                }
+            }
+        } catch (error) {
+            console.error("Error al cargar usuario desde localStorage:", error);
+        }
+    }, []);
 
     return (
-        <UserContext.Provider value={{ userState, login, logout }}>
+        <UserContext.Provider value={{ 
+            userState, 
+            login, 
+            logout, 
+            loginWithFirebase,
+            loginWithGoogle,
+            loginWithFacebook
+        }}>
             {children}
         </UserContext.Provider>
     );
