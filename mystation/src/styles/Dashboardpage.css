@@ -145,6 +145,66 @@
   font-style: italic;
 }
 
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #555;
+  font-style: italic;
+}
+
+.loading-spinner:before {
+  content: '';
+  width: 40px;
+  height: 40px;
+  margin-bottom: 1rem;
+  border: 4px solid rgba(29, 185, 84, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #1DB954;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  background-color: rgba(255, 0, 0, 0.1);
+  border-left: 4px solid #ff5252;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+
+.error-message p {
+  color: #b71c1c;
+  margin-bottom: 0.8rem;
+}
+
+.reconnect-btn {
+  background-color: #1DB954;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reconnect-btn:hover {
+  background-color: #169c46;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.reconnect-btn:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 768px) {
   .dashboard-card {
     padding: 1.5rem;

@@ -1,6 +1,6 @@
 const CLIENT_ID = "a1b518cc50e64d8e93a1e73f40afba98";
 const REDIRECT_URI = "http://127.0.0.1:3000/callback";
-const SCOPE = "user-read-private user-read-email";
+const SCOPE = "user-read-private user-read-email user-read-recently-played user-top-read";
 
 
 function generateRandomString(length) {
