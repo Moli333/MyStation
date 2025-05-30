@@ -1,4 +1,4 @@
-// src/spotify/Player.js
+// src/components/Player.jsx
 import { useEffect, useState } from "react";
 
 const Player = () => {
@@ -23,26 +23,22 @@ const Player = () => {
             setPlayer(playerInstance);
 
             playerInstance.addListener("ready", ({ device_id }) => {
-                console.log("Player is ready with Device ID", device_id);
+                console.log("Player ready:", device_id);
                 localStorage.setItem("spotify_device_id", device_id);
             });
 
             playerInstance.addListener("not_ready", ({ device_id }) => {
-                console.log("Device ID has gone offline", device_id);
+                console.log("Device offline:", device_id);
             });
 
             playerInstance.connect();
         };
 
-        return () => {
-            if (player) {
-                player.disconnect();
-            }
-        };
+        return () => player?.disconnect();
     }, [token]);
 
     return (
-        <div className="spotify-player">
+        <div className="rounded p-4 bg-purple-100 text-purple-900">
             <p>🎵 Reproductor web Spotify activo</p>
         </div>
     );

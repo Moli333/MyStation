@@ -1,4 +1,3 @@
-// src/spotify/Player.js
 import { useEffect, useState } from "react";
 
 const Player = () => {
@@ -16,7 +15,7 @@ const Player = () => {
         window.onSpotifyWebPlaybackSDKReady = () => {
             const playerInstance = new window.Spotify.Player({
                 name: "MyStation Player",
-                getOAuthToken: cb => cb(token),
+                getOAuthToken: cb => { cb(token); },
                 volume: 0.5
             });
 
@@ -43,7 +42,7 @@ const Player = () => {
 
     return (
         <div className="spotify-player">
-            <p>🎵 Reproductor web Spotify activo</p>
+            <p>🎵 Spotify Web Player activo</p>
         </div>
     );
 };
